@@ -1,4 +1,5 @@
 # Archivo de Proyecto: Arquetipo D/D/D (Yu-Gi-Oh!)
+
 Aplicacion web interactiva para la asignatura de Desarrollo Web y Bases de Datos (PUCV), que permite consultar, filtrar y visualizar cartas del arquetipo D/D/D conectandose a una base de datos MySQL mediante un backend en Node.js y Express.
 
 ## Tecnologias Utilizadas
