@@ -5,18 +5,16 @@ const btnTrampas = document.querySelector("#btnTrampas");
 const botonesFiltro = document.querySelectorAll(".filter-btn");
 const switchSets = document.querySelector("#switchSets");
 
-const apiURL = "https://db.ygoprodeck.com/api/v7/cardinfo.php?archetype=D%2FD";
-const apiSetsURL = "https://db.ygoprodeck.com/api/v7/cardsets.php";
+const apiURLNormal = "http://localhost:3000/api/cartas";
+const apiURLPorSet = "http://localhost:3000/api/cartas/por-set";
 
 let allCards = [];
-let setsGlobal = [];
 let setsCargados = false;
-// Diccionario para relacionar rápidamente el nombre de un set con su fecha de lanzamiento
-let mapaFechasSets = {};
 
+// Función para obtener las cartas iniciales desde el backend
 async function obtenerCartasDD() {
     try {
-        const res = await fetch(apiURL);
+        const res = await fetch(apiURLNormal);
         const resultado = await res.json();
         allCards = resultado.data || [];
         renderizarCartas();
@@ -26,40 +24,39 @@ async function obtenerCartasDD() {
     }
 }
 
-// Lógica del switch para llamar a la API y reagrupar por set
+// Evento del interruptor para cambiar entre vista normal y vista agrupada por set
 switchSets.addEventListener("change", async () => {
-    if (switchSets.checked) {
-        if (!setsCargados) {
-            try {
-                switchSets.disabled = true; // Deshabilita temporalmente mientras hace el fetch
-                const res = await fetch(apiSetsURL);
-                setsGlobal = await res.json();
+    try {
+        switchSets.disabled = true;
 
-                // Crea un mapa/diccionario para buscar la fecha de cada set de forma eficiente
-                setsGlobal.forEach(s => {
-                    mapaFechasSets[s.set_name] = s.tcg_date || "9999-12-31"; // Si no tiene fecha, se manda al final
-                });
-
-                setsCargados = true;
-                switchSets.disabled = false;
-            } catch (error) {
-                console.error("Error al obtener los sets:", error);
-                switchSets.checked = false; // Desmarca el switch si ocurre un error
-                switchSets.disabled = false;
-                return;
-            }
+        if (switchSets.checked) {
+            const res = await fetch(apiURLPorSet);
+            const resultado = await res.json();
+            allCards = resultado.data || [];
+            setsCargados = true;
+        } else {
+            const res = await fetch(apiURLNormal);
+            const resultado = await res.json();
+            allCards = resultado.data || [];
+            setsCargados = false;
         }
-    } else {
-        setsCargados = false; // Al apagar el switch, regresa a la vista sin agrupar
+
+        switchSets.disabled = false;
+        renderizarCartas();
+    } catch (error) {
+        console.error("Error al cambiar el filtro de sets:", error);
+        switchSets.checked = false;
+        switchSets.disabled = false;
     }
-    renderizarCartas();
 });
 
+// Función para filtrar y pintar las tarjetas en el DOM
 function renderizarCartas() {
     const mostrarMonstruos = btnMonstruos.checked;
     const mostrarMagicas = btnMagicas.checked;
     const mostrarTrampas = btnTrampas.checked;
 
+    // Filtrado dinámico según los botones seleccionados
     const cartasFiltradas = allCards.filter(carta => {
         const tipoLower = carta.type.toLowerCase();
         const esMagica = tipoLower.includes("spell");
@@ -79,7 +76,7 @@ function renderizarCartas() {
 
     let template = "";
 
-    // Si el switch está encendido, se agrupan y ordenan las cartas por año de lanzamiento del set
+    // Agrupación visual si el switch de sets está activo
     if (setsCargados) {
         let gruposPorSet = {};
 
@@ -94,24 +91,12 @@ function renderizarCartas() {
             gruposPorSet[nombreSet].push(carta);
         });
 
-        // Se obtienen los nombres de los sets para orderalos cronológicamente por su fecha TCG
-        const nombresSetsOrdenados = Object.keys(gruposPorSet).sort((a, b) => {
-            const fechaA = mapaFechasSets[a] || "9999-12-31";
-            const fechaB = mapaFechasSets[b] || "9999-12-31";
-            return fechaA.localeCompare(fechaB); // Orden ascendente: del año más antiguo al más reciente
-        });
-
-        // Recorre los sets ya ordenados por fecha y arma el HTML
-        nombresSetsOrdenados.forEach(nombreSet => {
+        Object.keys(gruposPorSet).forEach(nombreSet => {
             const cartasDelSet = gruposPorSet[nombreSet];
-
-            // Extrae el año sacándolo de la fecha (primeros 4 caracteres "YYYY-MM-DD")
-            const fechaSet = mapaFechasSets[nombreSet];
-            const anioSet = (fechaSet && fechaSet !== "9999-12-31") ? `(${fechaSet.substring(0, 4)})` : "(Fecha desconocida)";
 
             template += `
                 <div class="col-12 mt-4 mb-2">
-                    <h3 class="text-info border-bottom border-secondary pb-2"> ${nombreSet} <span class="text-warning fs-5">${anioSet}</span></h3>
+                    <h3 class="text-info border-bottom border-secondary pb-2"> ${nombreSet}</h3>
                 </div>
             `;
 
@@ -120,7 +105,7 @@ function renderizarCartas() {
             });
         });
     } else {
-        // Vista normal sin agrupar si el switch está apagado
+        // Vista estándar sin agrupar
         cartasFiltradas.forEach(carta => {
             template += generarHTMLTarjeta(carta);
         });
@@ -129,7 +114,7 @@ function renderizarCartas() {
     contenedorCartas.innerHTML = template;
 }
 
-// Función auxiliar para mantener limpia la creación de cada tarjeta
+// Función auxiliar para construir el HTML de cada tarjeta individual
 function generarHTMLTarjeta(carta) {
     const imagenURL = carta.card_images ? carta.card_images[0].image_url : "";
 
@@ -154,10 +139,10 @@ function generarHTMLTarjeta(carta) {
     `;
 }
 
-// Escucha cambios en los filtros de categorías
+// Escuchadores de eventos para los filtros de tipo
 botonesFiltro.forEach(btn => {
     btn.addEventListener("change", renderizarCartas);
 });
 
-// Inicia la carga del arquetipo al abrir la página
+// Llamada inicial al cargar la página
 obtenerCartasDD();

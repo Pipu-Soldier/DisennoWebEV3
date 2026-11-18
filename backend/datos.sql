@@ -1,0 +1,130 @@
+CREATE DATABASE IF NOT EXISTS yugioh_ddd;
+USE yugioh_ddd;
+
+CREATE TABLE tipos_carta (
+    tipo_id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(80) NOT NULL
+);
+
+-- 2. Tabla principal de Cartas (con relación a tipos_carta)
+CREATE TABLE cartas_yugioh (
+    carta_id INT AUTO_INCREMENT PRIMARY KEY,
+    card_id_api INT NOT NULL,
+    nombre VARCHAR(120) NOT NULL,
+    descripcion TEXT,
+    tipo VARCHAR(100) NOT NULL,
+    atributo VARCHAR(50),
+    nivel INT,
+    escala INT,
+    raza VARCHAR(100),
+    atk INT,
+    def INT,
+    imagen_url TEXT,
+    set_nombre VARCHAR(150),
+    tipo_id INT NOT NULL,
+    CONSTRAINT fk_tipo_carta FOREIGN KEY (tipo_id) REFERENCES tipos_carta(tipo_id)
+);
+
+-- Inserción de datos de ejemplo (Categorías / Tipos)
+INSERT INTO tipos_carta (tipo_id, nombre) VALUES 
+(1, 'Monstruo'),
+(2, 'Carta Mágica'),
+(3, 'Carta Trampa');
+
+INSERT INTO cartas_yugioh (card_id_api, nombre, descripcion, tipo, atributo, nivel, escala, raza, atk, def, imagen_url, set_nombre, tipo_id) VALUES
+(36614113, 'D/D Ark', 'If this card is destroyed by card effect...', 'Pendulum Effect Monster', 'DARK', 4, 1, 'Fiend', 0, 2000, 'https://images.ygoprodeck.com/images/cards/36614113.jpg', 'Rise of the Duelist', 1),
+(19808608, 'D/D Berfomet', 'Once per turn: You can target 1 \"D/D\" monster...', 'Effect Monster', 'DARK', 4, NULL, 'Fiend', 1400, 1800, 'https://images.ygoprodeck.com/images/cards/19808608.jpg', 'Dimension of Chaos', 1),
+(39153655, 'D/D Cerberus', 'When this card is Pendulum Summoned from the hand...', 'Pendulum Effect Monster', 'DARK', 4, 6, 'Fiend', 1800, 600, 'https://images.ygoprodeck.com/images/cards/39153655.jpg', 'Pendulum Domination Structure Deck', 1),
+(5997110, 'D/D Count Surveyor', 'You can discard 1 other \"D/D\" monster...', 'Pendulum Effect Monster', 'DARK', 8, 1, 'Fiend', 2000, 2000, 'https://images.ygoprodeck.com/images/cards/5997110.jpg', 'Battles of Legend: Monster Mayhem', 1),
+(93317313, 'D/D Defense Soldier', 'You can activate 1 of these effects...', 'Effect Monster', 'DARK', 4, NULL, 'Fiend', 0, 1800, 'https://images.ygoprodeck.com/images/cards/93317313.jpg', 'Doom of Dimensions', 1),
+(32349062, 'D/D Dog', 'Once per turn, if your opponent Special Summons...', 'Pendulum Effect Monster', 'DARK', 6, 3, 'Fiend', 2000, 2000, 'https://images.ygoprodeck.com/images/cards/32349062.jpg', 'Rise of the Duelist', 1),
+(55415564, 'D/D Evil', 'Cannot attack unless you control another \"D/D\" monster...', 'Pendulum Effect Monster', 'DARK', 4, 8, 'Fiend', 2000, 0, 'https://images.ygoprodeck.com/images/cards/55415564.jpg', 'Rise of the Duelist', 1),
+(74387963, 'D/D Extra Surveyor', 'You can discard this card...', 'Pendulum Effect Monster', 'DARK', 5, 4, 'Fiend', 1000, 0, 'https://images.ygoprodeck.com/images/cards/74387963.jpg', 'Battles of Legend: Monster Mayhem', 1),
+(33334269, 'D/D Ghost', 'If this card is sent to the Graveyard...', 'Tuner Monster', 'DARK', 2, NULL, 'Fiend', 600, 300, 'https://images.ygoprodeck.com/images/cards/33334269.jpg', 'Maximum Crisis', 1),
+(28406301, 'D/D Gryphon', 'If you control a \"D/D\" monster...', 'Pendulum Effect Monster', 'DARK', 4, 1, 'Fiend', 1200, 1200, 'https://images.ygoprodeck.com/images/cards/28406301.jpg', 'Battle of Chaos', 1),
+(19580308, 'D/D Lamia', 'If this card is in your hand or Graveyard...', 'Tuner Monster', 'DARK', 1, NULL, 'Fiend', 100, 1900, 'https://images.ygoprodeck.com/images/cards/19580308.jpg', 'Pendulum Domination Structure Deck', 1),
+(67322708, 'D/D Lance Soldier', 'You can target 1 \"D/D\" monster you control...', 'Tuner Monster', 'DARK', 2, NULL, 'Fiend', 400, 400, 'https://images.ygoprodeck.com/images/cards/67322708.jpg', 'Doom of Dimensions', 1),
+(12822541, 'D/D Lilith', 'If this card is Normal or Special Summoned...', 'Effect Monster', 'DARK', 4, NULL, 'Fiend', 100, 2100, 'https://images.ygoprodeck.com/images/cards/12822541.jpg', 'Pendulum Domination Structure Deck', 1),
+(72291412, 'D/D Necro Slime', 'If this card is in your Graveyard...', 'Effect Monster', 'DARK', 1, NULL, 'Fiend', 300, 300, 'https://images.ygoprodeck.com/images/cards/72291412.jpg', 'Dimension of Chaos', 1),
+(48210156, 'D/D Nighthowl', 'When this card is Normal Summoned...', 'Tuner Monster', 'DARK', 3, NULL, 'Fiend', 300, 600, 'https://images.ygoprodeck.com/images/cards/48210156.jpg', 'Pendulum Domination Structure Deck', 1),
+(72181263, 'D/D Orthros', 'When you take battle or effect damage...', 'Pendulum Tuner Effect Monster', 'DARK', 4, 3, 'Fiend', 600, 1800, 'https://images.ygoprodeck.com/images/cards/72181263.jpg', 'Pendulum Domination Structure Deck', 1),
+(32146097, 'D/D Pandora', 'When this card is destroyed by battle...', 'Effect Monster', 'DARK', 5, NULL, 'Fiend', 1700, 2100, 'https://images.ygoprodeck.com/images/cards/32146097.jpg', 'Clash of Rebellions', 1),
+(17979378, 'D/D Proud Chevalier', 'When this card is Normal Summoned...', 'Pendulum Effect Monster', 'DARK', 5, 6, 'Fiend', 2000, 700, 'https://images.ygoprodeck.com/images/cards/17979378.jpg', 'Pendulum Domination Structure Deck', 1),
+(81571633, 'D/D Proud Ogre', 'When this card is Normal Summoned...', 'Pendulum Effect Monster', 'DARK', 6, 8, 'Fiend', 2300, 1500, 'https://images.ygoprodeck.com/images/cards/81571633.jpg', 'Pendulum Domination Structure Deck', 1),
+(8643186, 'D/D Recruits', 'If your opponent controls more monsters...', 'Trap Card', NULL, NULL, NULL, 'Normal', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/8643186.jpg', 'Pendulum Domination Structure Deck', 1),
+(71069715, 'D/D Reroll', '\"Dark Contract\" cards you control cannot be destroyed...', 'Trap Card', NULL, NULL, NULL, 'Continuous', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/71069715.jpg', 'Pendulum Domination Structure Deck', 1),
+(46796664, 'D/D Savant Copernicus', 'If this card is Normal or Special Summoned...', 'Pendulum Effect Monster', 'DARK', 4, 1, 'Fiend', 0, 0, 'https://images.ygoprodeck.com/images/cards/46796664.jpg', 'Pendulum Domination Structure Deck', 1),
+(74605254, 'D/D Savant Galilei', 'During either player\'s turn: You can discard this card...', 'Pendulum Effect Monster', 'DARK', 10, 1, 'Fiend', 0, 0, 'https://images.ygoprodeck.com/images/cards/74605254.jpg', 'Dimension of Chaos', 1),
+(11609969, 'D/D Savant Kepler', 'If this card is Normal or Special Summoned...', 'Pendulum Effect Monster', 'DARK', 1, 10, 'Fiend', 0, 0, 'https://images.ygoprodeck.com/images/cards/11609969.jpg', 'Dimension of Chaos', 1),
+(19302550, 'D/D Savant Newton', 'You can discard this card...', 'Pendulum Effect Monster', 'DARK', 7, 10, 'Fiend', 0, 0, 'https://images.ygoprodeck.com/images/cards/19302550.jpg', 'Pendulum Domination Structure Deck', 1),
+(46035545, 'D/D Savant Nikola', 'If this card in the Pendulum Zone is destroyed...', 'Pendulum Effect Monster', 'DARK', 6, 8, 'Fiend', 2000, 2000, 'https://images.ygoprodeck.com/images/cards/46035545.jpg', 'The Dark Illusion', 1),
+(41546, 'D/D Savant Thomas', 'You can target 1 \"D/D\" card in your Pendulum Zone...', 'Pendulum Effect Monster', 'DARK', 8, 6, 'Fiend', 1800, 2600, 'https://images.ygoprodeck.com/images/cards/41546.jpg', 'The Dark Illusion', 1),
+(42382265, 'D/D Scale Surveyor', 'If you control a \"D/D\" Pendulum Monster Card...', 'Pendulum Effect Monster', 'DARK', 2, 9, 'Fiend', 0, 1000, 'https://images.ygoprodeck.com/images/cards/42382265.jpg', 'Battles of Legend: Monster Mayhem', 1),
+(45206713, 'D/D Swirl Slime', 'If this card is in your hand...', 'Effect Monster', 'DARK', 2, NULL, 'Fiend', 200, 200, 'https://images.ygoprodeck.com/images/cards/45206713.jpg', 'Dimension of Chaos', 1),
+(59123937, 'D/D Vice Typhon', 'When this card is Normal Summoned...', 'Effect Monster', 'DARK', 7, NULL, 'Fiend', 2300, 2800, 'https://images.ygoprodeck.com/images/cards/59123937.jpg', 'Code of the Duelist', 1),
+(9024198, 'D/D/D Abyss King Gilgamesh', '2 \"D/D\" monsters...', 'Link Monster', 'DARK', NULL, NULL, 'Fiend', 1800, NULL, 'https://images.ygoprodeck.com/images/cards/9024198.jpg', 'Duel Overload', 1),
+(11852093, 'D/D/D Alfred the Divine Sage King', '2 \"D/D\" monsters...', 'Fusion Monster', 'DARK', 6, NULL, 'Fiend', 1500, 2000, 'https://images.ygoprodeck.com/images/cards/11852093.jpg', 'Burst Protocol', 1),
+(83303851, 'D/D/D Chaos King Apocalypse', 'You can banish 2 \"D/D\" monsters from your Graveyard...', 'Pendulum Effect Monster', 'DARK', 7, 4, 'Fiend', 2700, 2000, 'https://images.ygoprodeck.com/images/cards/83303851.jpg', 'Pendulum Domination Structure Deck', 1),
+(811734, 'D/D/D Contract Change', 'When an opponent\'s monster declares an attack...', 'Trap Card', NULL, NULL, NULL, 'Normal', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/811734.jpg', 'Dimension of Chaos', 1),
+(44852429, 'D/D/D Cursed King Siegfried', '1 Tuner + 1 or more non-Tuner \"D/D\" monsters...', 'Synchro Monster', 'DARK', 8, NULL, 'Fiend', 2800, 2200, 'https://images.ygoprodeck.com/images/cards/44852429.jpg', 'Pendulum Domination Structure Deck', 1),
+(21686473, 'D/D/D Destiny King Zero Laplace', 'You can Special Summon this card (from your hand)...', 'Pendulum Effect Monster', 'DARK', 10, 1, 'Fiend', -1, 0, 'https://images.ygoprodeck.com/images/cards/21686473.jpg', 'Yu-Gi-Oh! ARC-V Volume 3 promotional card', 1),
+(46593546, 'D/D/D Deviser King Deus Machinex', '2 Level 10 Fiend monsters...', 'XYZ Pendulum Effect Monster', 'DARK', 10, 10, 'Fiend', 3000, 3000, 'https://images.ygoprodeck.com/images/cards/46593546.jpg', 'Battle of Chaos', 1),
+(47198668, 'D/D/D Doom King Armageddon', 'Once per turn, if a monster(s) you control is destroyed...', 'Pendulum Effect Monster', 'DARK', 8, 4, 'Fiend', 3000, 1000, 'https://images.ygoprodeck.com/images/cards/47198668.jpg', 'Pendulum Domination Structure Deck', 1),
+(56619314, 'D/D/D Dragon King Pendragon', 'If this card is in your hand...', 'Effect Monster', 'DARK', 7, NULL, 'Fiend', 2600, 2400, 'https://images.ygoprodeck.com/images/cards/56619314.jpg', '2-Player Starter Deck: Yuya & Declan', 1),
+(8463720, 'D/D/D Dragonbane King Beowulf', '1 \"D/D/D\" monster + 1 \"D/D\" monster...', 'Fusion Monster', 'DARK', 8, NULL, 'Fiend', 3000, 2500, 'https://images.ygoprodeck.com/images/cards/8463720.jpg', 'Pendulum Domination Structure Deck', 1),
+(15939229, 'D/D/D Duo-Dawn King Kali Yuga', '2 Level 8 \"D/D\" monsters...', 'XYZ Monster', 'DARK', 8, NULL, 'Fiend', 3500, 3000, 'https://images.ygoprodeck.com/images/cards/15939229.jpg', 'Dimension of Chaos', 1),
+(70576413, 'D/D/D First King Clovis', '1 Tuner + 1+ non-Tuner monsters...', 'Synchro Monster', 'DARK', 6, NULL, 'Fiend', 2100, 1900, 'https://images.ygoprodeck.com/images/cards/70576413.jpg', 'Doom of Dimensions', 1),
+(16006416, 'D/D/D Flame High King Genghis', '1 Level 5 or higher \"D/D\" monster + 1 \"D/D\" monster...', 'Fusion Monster', 'FIRE', 8, NULL, 'Fiend', 2800, 2400, 'https://images.ygoprodeck.com/images/cards/16006416.jpg', 'Soul Fusion', 1),
+(74583607, 'D/D/D Flame King Genghis', '2 \"D/D\" monsters...', 'Fusion Monster', 'FIRE', 6, NULL, 'Fiend', 2000, 1500, 'https://images.ygoprodeck.com/images/cards/74583607.jpg', '2016 Mega-Tins', 1),
+(6766208, 'D/D/D Gust High King Alexander', '1 Tuner + 1+ non-Tuner monsters...', 'Synchro Monster', 'WIND', 10, NULL, 'Fiend', 3000, 2500, 'https://images.ygoprodeck.com/images/cards/6766208.jpg', 'Code of the Duelist', 1),
+(987311, 'D/D/D Gust King Alexander', '1 \"D/D\" Tuner + 1 or more non-Tuner monsters...', 'Synchro Monster', 'WIND', 7, NULL, 'Fiend', 2500, 2000, 'https://images.ygoprodeck.com/images/cards/987311.jpg', '2016 Mega-Tins', 1),
+(91781484, 'D/D/D Headhunt', 'If you control a \"D/D/D\" monster...', 'Trap Card', NULL, NULL, NULL, 'Normal', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/91781484.jpg', 'Battle of Chaos', 1),
+(72648577, 'D/D/D Human Resources', 'Shuffle 3 cards into the Deck...', 'Trap Card', NULL, NULL, NULL, 'Normal', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/72648577.jpg', 'Dimension of Chaos', 1),
+(71612253, 'D/D/D Marksman King Tell', '2 Level 5 monsters...', 'XYZ Monster', 'DARK', 5, NULL, 'Fiend', 2300, 2000, 'https://images.ygoprodeck.com/images/cards/71612253.jpg', 'Clash of Rebellions', 1),
+(74069667, 'D/D/D Oblivion King Abyss Ragnarok', 'If this card is Normal or Special Summoned...', 'Pendulum Effect Monster', 'DARK', 8, 5, 'Fiend', 2200, 3000, 'https://images.ygoprodeck.com/images/cards/74069667.jpg', 'Dimension of Chaos', 1),
+(82956492, 'D/D/D Oracle King d\'Arc', '2 \"D/D\" monsters...', 'Fusion Monster', 'DARK', 7, NULL, 'Fiend', 2800, 2000, 'https://images.ygoprodeck.com/images/cards/82956492.jpg', 'Clash of Rebellions', 1),
+(92536468, 'D/D/D Rebel King Leonidas', 'When you take effect damage...', 'Pendulum Effect Monster', 'DARK', 7, 3, 'Fiend', 2600, 1200, 'https://images.ygoprodeck.com/images/cards/92536468.jpg', 'Dimension of Chaos', 1),
+(30998403, 'D/D/D Sky King Zeus Ragnarok', '2+ \"D/D\" monsters...', 'Link Monster', 'DARK', NULL, NULL, 'Fiend', 2200, NULL, 'https://images.ygoprodeck.com/images/cards/30998403.jpg', 'Doom of Dimensions', 1),
+(51497409, 'D/D/D Stone King Darius', '2 Level 3 Fiend-Type monsters...', 'XYZ Monster', 'EARTH', 3, NULL, 'Fiend', 1900, 1000, 'https://images.ygoprodeck.com/images/cards/51497409.jpg', 'Maximum Crisis', 1),
+(72402069, 'D/D/D Super Doom King Bright Armageddon', '1 \"D/D\" Tuner + 1+ non-Tuner \"D/D/D\" monsters...', 'Synchro Pendulum Effect Monster', 'DARK', 10, 1, 'Fiend', 3500, 3000, 'https://images.ygoprodeck.com/images/cards/72402069.jpg', 'Battles of Legend: Light\'s Revenge', 1),
+(18897163, 'D/D/D Super Doom King Dark Armageddon', '2 Level 8 \"D/D/D\" monsters...', 'XYZ Pendulum Effect Monster', 'DARK', 8, 1, 'Fiend', 3500, 3000, 'https://images.ygoprodeck.com/images/cards/18897163.jpg', 'Battles of Legend: Light\'s Revenge', 1),
+(84569886, 'D/D/D Super Doom King Purple Armageddon', '2 \"D/D/D\" monsters...', 'Fusion Pendulum Effect Monster', 'DARK', 10, 1, 'Fiend', 3500, 3000, 'https://images.ygoprodeck.com/images/cards/84569886.jpg', 'Soul Fusion', 1),
+(76029419, 'D/D/D Supersight King Zero Maxwell', 'Before damage calculation...', 'Pendulum Effect Monster', 'DARK', 7, 4, 'Fiend', 2800, 2500, 'https://images.ygoprodeck.com/images/cards/76029419.jpg', 'Lightning Overdrive', 1),
+(44186624, 'D/D/D Supreme King Kaiser', 'If this card is Pendulum Summoned...', 'Effect Monster', 'DARK', 7, NULL, 'Fiend', 2800, 2100, 'https://images.ygoprodeck.com/images/cards/44186624.jpg', 'Pendulum Domination Structure Deck', 1),
+(25857977, 'D/D/D Vice King Requiem', 'You cannot Special Summon monsters...', 'Pendulum Effect Monster', 'DARK', 8, 8, 'Fiend', 2800, 2000, 'https://images.ygoprodeck.com/images/cards/25857977.jpg', 'Ghosts From the Past: The 2nd Haunting', 1),
+(79559912, 'D/D/D Wave High King Caesar', '2 Level 6 Fiend monsters...', 'XYZ Monster', 'WATER', 6, NULL, 'Fiend', 2800, 1800, 'https://images.ygoprodeck.com/images/cards/79559912.jpg', 'Code of the Duelist', 1),
+(3758046, 'D/D/D Wave King Caesar', '2 Level 4 Fiend-Type monsters...', 'XYZ Monster', 'WATER', 4, NULL, 'Fiend', 2400, 1200, 'https://images.ygoprodeck.com/images/cards/3758046.jpg', 'Dimension of Chaos', 1),
+(27873305, 'D/D/D Wave Oblivion King Caesar Ragnarok', '2 \"D/D/D\" monsters...', 'Fusion Monster', 'DARK', 10, NULL, 'Fiend', 3200, 3000, 'https://images.ygoprodeck.com/images/cards/27873305.jpg', 'Dimension of Chaos', 1),
+(32232538, 'D/D/D Wise King Solomon', '2 Level 4 \"D/D\" monsters...', 'XYZ Monster', 'DARK', 4, NULL, 'Fiend', 1800, 2500, 'https://images.ygoprodeck.com/images/cards/32232538.jpg', 'Doom of Dimensions', 1),
+(20715411, 'D/D/D Zero Doom Queen Machinex', 'If a face-up \"D/D/D\" and/or \"Dark Contract\" card(s)...', 'Pendulum Effect Monster', 'DARK', 8, 0, 'Fiend', 3000, 0, 'https://images.ygoprodeck.com/images/cards/20715411.jpg', 'Doom of Dimensions', 1),
+(71398055, 'D/D/D/D Dimensional King Arc Crisis', '4 Fiend monsters (1 Fusion, 1 Synchro, 1 Xyz, and 1 Pendulum)...', 'Fusion Pendulum Effect Monster', 'DARK', 12, 13, 'Fiend', 4000, 4000, 'https://images.ygoprodeck.com/images/cards/71398055.jpg', 'Doom of Dimensions', 1),
+(97417863, 'D/D/D/D Super-Dimensional Sovereign Emperor Zero Paradox', 'Cannot be Normal Summoned/Set...', 'Pendulum Effect Monster', 'DARK', 12, 10, 'Fiend', 3000, 3000, 'https://images.ygoprodeck.com/images/cards/97417863.jpg', 'Battles of Legend: Monstrous Revenge', 1),
+(37209439, 'Dark Contract with Errors', 'Once per turn, if you control a \"D/D\" monster...', 'Trap Card', NULL, NULL, NULL, 'Continuous', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/37209439.jpg', 'Dimension of Chaos', 1),
+(60168186, 'Dark Contract with the Entities', 'When a \"D/D/D\" monster of the below card type...', 'Spell Card', NULL, NULL, NULL, 'Continuous', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/60168186.jpg', 'Raging Tempest', 1),
+(9030160, 'Dark Contract with the Eternal Darkness', 'While you have 2 \"D/D\" cards in your Pendulum Zones...', 'Trap Card', NULL, NULL, NULL, 'Continuous', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/9030160.jpg', 'Maximum Crisis', 1),
+(46372010, 'Dark Contract with the Gate', 'During your Main Phase: You can add 1 \"D/D\" monster...', 'Spell Card', NULL, NULL, NULL, 'Continuous', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/46372010.jpg', 'Dimension of Chaos', 1),
+(73360025, 'Dark Contract with the Swamp King', 'During your Main Phase: You can Fusion Summon 1...', 'Spell Card', NULL, NULL, NULL, 'Continuous', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/73360025.jpg', 'Dimension of Chaos', 1),
+(9765723, 'Dark Contract with the Witch', 'You can send 1 \"D/D\" or \"Dark Contract\" card...', 'Trap Card', NULL, NULL, NULL, 'Continuous', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/9765723.jpg', 'Dimension of Chaos', 1),
+(45974017, 'Dark Contract with the Yamimakai', 'Once per turn, during your Standby Phase...', 'Spell Card', NULL, NULL, NULL, 'Continuous', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/45974017.jpg', 'Pendulum Domination Structure Deck', 1),
+(32665564, 'Dark Contract with the Zero King', 'You can target 1 \"D/D\" card you control...', 'Spell Card', NULL, NULL, NULL, 'Continuous', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/32665564.jpg', 'Doom of Dimensions', 1),
+(10833828, 'Forbidden Dark Contract with the Swamp King', 'Once per turn: You can Special Summon 1 \"D/D/D\" monster...', 'Spell Card', NULL, NULL, NULL, 'Continuous', NULL, NULL, 'https://images.ygoprodeck.com/images/cards/10833828.jpg', 'The Dark Illusion', 1),
+(40227329, 'Go! - D/D/D Divine Zero King Rage', 'When this card declares an attack...', 'Pendulum Effect Monster', 'DARK', 10, 0, 'Fiend', 0, 0, 'https://images.ygoprodeck.com/images/cards/40227329.jpg', 'Yu-Gi-Oh! ARC-V Volume 7 promotional card', 1);
+
+SELECT
+    p.card_id_api AS id,
+    p.nombre AS name,
+    p.tipo AS type,
+    p.descripcion AS `desc`,
+    p.atributo AS attribute,
+    p.nivel AS level,
+    p.escala AS scale,
+    p.raza AS race,
+    p.atk,
+    p.def,
+    p.imagen_url,
+    p.set_nombre,
+    t.nombre AS categoria
+FROM cartas_yugioh AS p
+INNER JOIN tipos_carta AS t
+    ON p.tipo_id = t.tipo_id
+ORDER BY p.nombre;
